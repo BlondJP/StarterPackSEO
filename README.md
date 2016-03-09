@@ -10,7 +10,6 @@ $dom->setH2(1, 'jus de pomme en brique');<br />
 $dom->setH2(2, 'jus de pomme en bouteille');<br />
 $dom->auditSEO();<br />
 <br />
-
 #############################################<br />
 ################# MON AUDIT SEO #############<br />
 #############################################<br />
