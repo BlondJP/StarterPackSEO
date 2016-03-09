@@ -1,5 +1,7 @@
 <?php
 
+include_once('SeoAnalyzer.php');
+
 
 #############################################################################
 #### Cette classe vérifiera les règles SEO sur un dom en développement ######
@@ -19,8 +21,8 @@ class StarterPackSEO
 	{
 		$this->keyword = $keyword;
 
-		$this->title = 'TITLE par default';
-		$this->h1 = 'H1 par default';
+		$this->title = NULL;
+		$this->h1 = NULL;
 		$this->h2s = [];
 		$this->h3s = [];
 	}
@@ -28,6 +30,11 @@ class StarterPackSEO
 	#################################################
 	####### METHODES POUR REMPLIR LE DOM ############
 	#################################################
+
+	public function setTitle($title)
+	{
+		$this->title = $title;
+	}
 
 	public function setH1($h1)
 	{
@@ -49,13 +56,33 @@ class StarterPackSEO
 	####### METHODES POUR AUDITER LE DOM ############
 	#################################################
 
-	public function getDom()
+	private function auditTitle()
 	{
-		var_dump($this);
+		echo '<b>Audit Title:</b><br>';
+		if ($this->title != NULL)
+		{
+				if (strlen($this->title) > 65)
+					echo '<font color="red">Attention votre title est clairement trop long, il contient '.strlen($this->title).'caractères. Vous devez avoir un title qui comporte entre 40 et 65 caractères</font><br>';
+				elseif (strlen($this->title) < 65 && strlen($this->title) > 15)
+				{
+					echo '<font color="green">La longueur de votre title est bonne. Vous devez avoir un title qui comporte entre 15 et 65 caractères</font><br>';
+					if (SeoAnalyzer::isAWordInASentence($this->keyword, $this->title) === TRUE)
+						echo '<font color="green">Votre Title contient le mot-clé, il est donc optimisé</font><br>';
+					else
+						echo '<font color="red">Attention votre title ne contient pas le mot-clé, vous devez insérer "'.$this->keyword.'" pour qu\'il soit optimisé</font><br>';
+				}
+				else
+					echo '<font color="red">Attention votre title est clairement trop court, il contient '.strlen($this->title).'caractères. Vous devez avoir un title qui comporte entre 40 et 65 caractères</font><br>';
+		}
+		else {
+			echo '<font color="red">Attention vous n\'avez pas défini de title pour dans votre DOM</font><br>';
+		}
+		echo '<br>';
 	}
 
 	public function auditSEO()
 	{
-		echo 'vous êtes au top';
+		echo '<meta charset="utf-8">';
+		$this->auditTitle();
 	}
 }
